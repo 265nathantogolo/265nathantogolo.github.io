@@ -27,7 +27,14 @@ Le workflow `.github/workflows/deploy.yml` construit et publie le site à chaque
 4. Suivre le déploiement dans l'onglet **Actions**. Le site est ensuite en ligne à `https://<pseudo>.github.io/<depot>/`
    (ou `https://<pseudo>.github.io/` si le dépôt s'appelle `<pseudo>.github.io`).
 
-Pour mettre à jour le site : `git add -A`, `git commit -m "…"`, `git push`.
+### Synchronisation automatique
+
+Les modifications partent seules sur GitHub (puis en ligne ~1 min plus tard) :
+
+- **VS Code** : à l'ouverture du dossier, la tâche « Synchro GitHub » (`.vscode/tasks.json`) surveille les fichiers et envoie chaque modification 8 s après le dernier enregistrement. La première fois, VS Code demande d'autoriser les tâches automatiques : répondre « Autoriser ». Relance manuelle : *Terminal → Exécuter la tâche → Synchro GitHub*.
+- **Claude Code** : à la fin de chaque réponse, un hook (`.claude/settings.json`) envoie ce qui a été modifié.
+
+Le script commun est `scripts/auto-sync.ps1` (`-Once` pour un seul envoi). Envoi manuel possible : `git add -A`, `git commit -m "…"`, `git push`.
 
 ### Autre hébergeur
 
