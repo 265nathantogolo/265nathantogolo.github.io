@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // envoie chaque modification sur GitHub (voir scripts/auto-sync.ps1)
+      "label": "Synchro GitHub",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${workspaceFolder}\\scripts\\auto-sync.ps1"],
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "dedicated", "showReuseMessage": false },
+      "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
+    }
+  ]
+}
