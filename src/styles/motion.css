@@ -1,0 +1,198 @@
+/* ==========================================================================
+   MOUVEMENT
+   Une seule courbe d'accélération (expo-out) pour presque tout ;
+   apparitions déclenchées au scroll, une seule fois ; rien ne boucle.
+   ========================================================================== */
+
+@layer components {
+  /* ---------- apparition générique ---------- */
+  [data-reveal] {
+    opacity: 0;
+    translate: 0 26px;
+    transition:
+      opacity 0.9s var(--ease-out),
+      translate 1.1s var(--ease-out);
+    transition-delay: var(--d, 0ms);
+  }
+  [data-reveal].is-in {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  /* ---------- titres : mots qui montent derrière un masque ---------- */
+  .split[data-reveal] {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .split__w {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    /* marge pour les accents et jambages, qu'un masque serré couperait */
+    padding: 0.14em 0.02em 0.06em;
+    margin: -0.14em -0.02em -0.06em;
+  }
+  .split__i {
+    display: inline-block;
+    translate: 0 112%;
+    transition: translate 1.05s var(--ease-out);
+    transition-delay: calc(var(--d, 0ms) + var(--i) * 55ms);
+  }
+  .split.is-in .split__i {
+    translate: 0 0;
+  }
+
+  /* ---------- grands titres ajustés : montée en bloc ---------- */
+  .hero__name[data-reveal],
+  .project__title[data-reveal] {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .hero__name .fit-text,
+  .project__title .fit-text {
+    translate: 0 105%;
+    transition: translate 1.3s var(--ease-out) 0.08s;
+  }
+  .hero__name.is-in .fit-text,
+  .project__title.is-in .fit-text {
+    translate: 0 0;
+  }
+
+  /* ---------- images : le cadre s'ouvre, l'image se pose ---------- */
+  .feat__frame[data-reveal],
+  .card[data-reveal] .card__media {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .feat__frame[data-reveal] {
+    clip-path: inset(14% 0 0 0);
+    transition: clip-path 1.3s var(--ease-out);
+  }
+  .feat__frame[data-reveal] img {
+    scale: 1.14;
+    transition:
+      scale 1.7s var(--ease-out),
+      transform 1.3s var(--ease-out),
+      opacity 0.7s;
+  }
+  .feat__frame.is-in {
+    clip-path: inset(0);
+  }
+  .feat__frame.is-in img {
+    scale: 1;
+  }
+
+  .gallery__fig[data-reveal] {
+    translate: 0 40px;
+  }
+  .gallery__fig[data-reveal].is-in {
+    translate: 0 0;
+  }
+
+  /* bande d'accueil : les vignettes montent une à une */
+  .strip[data-reveal] {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .strip[data-reveal] .strip__item {
+    clip-path: inset(100% 0 0 0);
+    transition:
+      clip-path 1.1s var(--ease-out) calc(var(--i) * 55ms + 150ms),
+      flex-grow 0.9s var(--ease-out);
+  }
+  .strip.is-in .strip__item {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* passions : chaque mot se resserre en arrivant */
+  .passion[data-reveal] .passion__word {
+    font-stretch: 112%;
+  }
+  .passion[data-reveal].is-in .passion__word {
+    font-stretch: 62%;
+    transition-delay: calc(var(--i) * 70ms);
+  }
+  .passion[data-reveal].is-in:hover .passion__word {
+    font-stretch: 112%;
+    transition-delay: 0ms;
+  }
+
+  /* parcours : les étapes s'enchaînent */
+  .edu__step[data-reveal] {
+    transition-delay: calc(var(--i) * 120ms);
+  }
+}
+
+/* ---------- transitions entre pages (View Transitions API) ---------- */
+::view-transition-old(root) {
+  animation: vt-out 0.35s var(--ease-out) both;
+}
+::view-transition-new(root) {
+  animation: vt-in 0.5s var(--ease-out) both;
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ouverture d'un projet : la vignette cliquée devient la couverture */
+.vt-hero {
+  view-transition-name: hero-media;
+}
+::view-transition-group(hero-media) {
+  animation-duration: 0.85s;
+  animation-timing-function: var(--ease-in-out);
+}
+::view-transition-old(hero-media),
+::view-transition-new(hero-media) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation-duration: 0.85s;
+}
+
+/* filtres : chaque carte glisse vers sa nouvelle place */
+html[data-vt="filter"] .card,
+html[data-vt="filter"] .plist__item {
+  view-transition-name: var(--vt);
+}
+html[data-vt="filter"]::view-transition-group(*) {
+  animation-duration: 0.65s;
+  animation-timing-function: var(--ease-out);
+}
+
+/* ---------- préférences : animations réduites ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal],
+  .split__i,
+  .hero__name .fit-text,
+  .project__title .fit-text,
+  .feat__frame img,
+  .gallery__fig[data-reveal] {
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+  }
+  .feat__frame[data-reveal],
+  .strip[data-reveal] .strip__item {
+    clip-path: none !important;
+  }
+  .loader__sig {
+    clip-path: none;
+  }
+}

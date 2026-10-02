@@ -1,0 +1,276 @@
+/* ==========================================================================
+   DESIGN SYSTEM — jetons
+   Couleurs tirées du CV : papier clair, encre, bleu électrique, rouge signal.
+   Typographie : Archivo (grotesque à largeur variable, condensée pour les titres)
+   + Instrument Serif italique pour les accents éditoriaux.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --paper: #eeeeea;
+    --paper-2: #e3e3dd;
+    --paper-3: #d6d6cf;
+    --ink: #121314;
+    --ink-2: #222427;
+    --blue: #1f4bff;
+    --blue-light: #8aa2ff;
+    --red: #e5281d;
+
+    --bg: var(--paper);
+    --fg: var(--ink);
+    --muted: #5d5e59;
+    --line: rgba(18, 19, 20, 0.14);
+    --line-strong: rgba(18, 19, 20, 0.3);
+    --surface: var(--paper-2);
+    --glass-tint: rgba(238, 238, 234, 0.55);
+
+    --font-sans: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+
+    /* grille : 12 colonnes, marges latérales proportionnelles (min. 16 px) */
+    --pad: max(16px, 4vw);
+    --gutter: clamp(12px, 1.6vw, 28px);
+    --header-h: clamp(76px, 8vw, 120px);
+
+    /* échelle typographique fluide */
+    --fs-label: 11px;
+    --fs-small: clamp(13px, 0.9vw, 15px);
+    --fs-body: clamp(15px, 1.05vw, 17px);
+    --fs-lead: clamp(19px, 1.65vw, 28px);
+    --fs-h3: clamp(26px, 2.6vw, 44px);
+    --fs-h2: clamp(48px, 7.4vw, 128px);
+    --fs-display: clamp(84px, 17vw, 280px);
+
+    /* mouvement */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+
+    --radius-pill: 999px;
+    --radius-card: clamp(14px, 1.6vw, 26px);
+    color-scheme: light;
+  }
+
+  .dark {
+    --bg: var(--ink);
+    --fg: var(--paper);
+    --muted: #9c9d97;
+    --line: rgba(238, 238, 234, 0.14);
+    --line-strong: rgba(238, 238, 234, 0.32);
+    --surface: var(--ink-2);
+    --color-primary: #eeeeea;
+    color-scheme: dark;
+  }
+
+  html {
+    background: var(--paper);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--blue);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .dark :focus-visible {
+    outline-color: var(--blue-light);
+  }
+  main:focus,
+  main:focus-visible {
+    outline: none;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  sup {
+    font-size: 0.6em;
+    top: -0.7em;
+    margin-left: 0.15em;
+    font-weight: 500;
+    opacity: 0.65;
+  }
+}
+
+@layer components {
+  .page-pad {
+    padding-left: var(--pad);
+    padding-right: var(--pad);
+  }
+
+  .label {
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  /* titres « affiche » : grotesque condensée, capitales */
+  .display,
+  .hero__name .fit-text,
+  .work__title,
+  .featured__title,
+  .feat__title,
+  .project__title .fit-text,
+  .next__title .fit-text,
+  .section-head__title,
+  .about__name,
+  .contact__title,
+  .notfound__title {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-stretch: 62%;
+    text-transform: uppercase;
+    letter-spacing: -0.004em;
+    line-height: 0.84;
+  }
+
+  .fit-text {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .img {
+    opacity: 0;
+    transition: opacity 0.7s var(--ease-out);
+  }
+  .img.is-loaded {
+    opacity: 1;
+  }
+
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: max-content;
+    font-weight: 600;
+    font-size: var(--fs-small);
+    padding-bottom: 4px;
+    border-bottom: 1px solid currentColor;
+  }
+  .text-link .arrow,
+  .liquid-button .arrow,
+  .back-link .arrow,
+  .feat__cta .arrow,
+  .hard__link .arrow {
+    transition: translate 0.45s var(--ease-out);
+  }
+  .text-link:hover .arrow,
+  .liquid-button:hover .arrow,
+  .feat__text:hover .feat__cta .arrow,
+  .hard__link:hover .arrow {
+    translate: 4px 0;
+  }
+
+  .skip-link {
+    position: fixed;
+    left: var(--pad);
+    top: -80px;
+    z-index: 200;
+    padding: 10px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--blue);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    transition: top 0.3s var(--ease-out);
+  }
+  .skip-link:focus {
+    top: 12px;
+  }
+
+  /* pastille « en recherche d'alternance » (rouge du CV) */
+  .availability {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: var(--fs-small);
+    font-weight: 500;
+    line-height: 1.35;
+    max-width: 36ch;
+  }
+  .availability__dot {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--red);
+    translate: 0 -1px;
+    animation: pulse 2.4s ease-out 1.4s 3;
+  }
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(229, 40, 29, 0.5);
+    }
+    100% {
+      box-shadow: 0 0 0 12px rgba(229, 40, 29, 0);
+    }
+  }
+  .availability--banner {
+    background: var(--red);
+    color: #fff;
+    padding: 12px 20px 12px 16px;
+    border-radius: var(--radius-pill);
+    max-width: max-content;
+    align-items: center;
+  }
+  .availability--banner .availability__dot {
+    background: #fff;
+    translate: 0;
+  }
+
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pill {
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag {
+    display: inline-flex;
+    padding: 6px 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    line-height: 1.25;
+    transition:
+      background 0.3s,
+      color 0.3s,
+      border-color 0.3s;
+  }
+  .tag:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+}

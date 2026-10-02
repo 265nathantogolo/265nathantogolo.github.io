@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@import "./base.css";
+@import "./layout.css";
+@import "./components.css";
+@import "./pages.css";
+@import "./motion.css";
+
+/* le composant Liquid Glass utilise `dark:` : on le pilote par la classe .dark (sections sombres) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* variables attendues par le composant (convention shadcn) */
+@theme {
+  --color-primary: #121314;
+  --color-ring: #1f4bff;
+  --color-destructive: #e5281d;
+  --color-background: #eeeeea;
+  --color-accent: #e3e3dd;
+  --color-accent-foreground: #121314;
+  --color-secondary: #e3e3dd;
+  --color-secondary-foreground: #121314;
+  --color-input: #d8d8d1;
+}
