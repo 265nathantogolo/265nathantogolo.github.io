@@ -1,5 +1,3 @@
-# Publie le site sur GitHub Pages à chaque push sur main.
-# À activer une fois : Settings → Pages → Source : « GitHub Actions ».
 name: Déploiement GitHub Pages
 
 on:
@@ -12,7 +10,6 @@ permissions:
   pages: write
   id-token: write
 
-# un seul déploiement à la fois, sans annuler celui en cours
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -20,17 +17,22 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+      # Vide pour 265nathantogolo.github.io (site utilisateur).
+      # Pour un dépôt de projet, créer la variable de dépôt NEXT_PUBLIC_BASE_PATH (ex. /portfolio).
+      NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: out
 
   deploy:
     needs: build

@@ -4,9 +4,3 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
-
-export const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
-
-export function smallSrc(src: string) {
-  return src.replace(/\.webp$/, "-sm.webp");
-}

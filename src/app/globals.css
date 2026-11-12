@@ -1,0 +1,514 @@
+@import "tailwindcss";
+
+/*
+  Direction artistique « agence », inspirée de Supaste :
+  - fonds blancs, cartes gris clair #F7F7F7 arrondies à 30 px, sections centrées ;
+  - titres en Inter (coupe Display via l'axe opsz) + Instrument Serif italique ;
+  - boutons, nav et panneaux en verre liquide (filtre SVG, sans flou de fond) ;
+  - accueil sur l'image spatiale, footer noir à encoche inversée ;
+  - rose-rouge signature #FF205C, teinte propre à chaque projet.
+*/
+
+:root {
+  --background: #ffffff;
+  --foreground: #1d1d1f;
+  --surface: #f7f7f7;
+  --night: #0b0b0d;
+  --night-foreground: #f5f5f7;
+  --night-muted: #a1a1a6;
+
+  /* Rose-rouge signature : aplats, points, survols, grands textes (3,7:1 sur blanc). */
+  --signature: #ff205c;
+
+  /* Tokens shadcn adaptés à la palette */
+  --muted: #f7f7f7;
+  --muted-foreground: #6e6e73; /* 5,1:1 sur blanc */
+  --primary: #ff205c;
+  /* Même teinte un ton plus soutenu, pour les petits textes rouges sur blanc (4,9:1). */
+  --primary-ink: #e0004a;
+  --primary-foreground: #ffffff;
+  --secondary: #1d1d1f;
+  --secondary-foreground: #ffffff;
+  --accent: #ececf0;
+  --accent-foreground: #1d1d1f;
+  --destructive: #b42318;
+  --border: #e3e3e8;
+  --input: #d2d2d7;
+  --ring: #ff205c;
+
+  /*
+    Teinte des boutons en verre liquide, redéfinie par page :
+    accueil verre clair, Projets neutre, projet = couleur dominante,
+    À propos / Contact / 404 = rouge signature.
+  */
+  --tint: color-mix(in srgb, var(--primary) 90%, transparent);
+  --on-tint: #ffffff;
+  --ink: var(--primary-ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-night: var(--night);
+  --color-night-foreground: var(--night-foreground);
+  --color-night-muted: var(--night-muted);
+  --color-signature: var(--signature);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-ink: var(--primary-ink);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-tint: var(--tint);
+  --color-on-tint: var(--on-tint);
+  --color-ink: var(--ink);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  --radius-card: 1.875rem; /* 30 px : cartes, panneaux */
+  --radius-tile: 1.125rem; /* 18 px : vignettes, logos */
+
+  --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-float: float 7s ease-in-out infinite;
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "cv11", "ss03";
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--signature);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  [id] {
+    scroll-margin-top: 7rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+/* Gabarit : grille unique, gouttières 16 / 24 / 40 px */
+@utility container-page {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Échelle typographique (Inter, coupe Display automatique au-delà de 32 px) */
+@utility display-xl {
+  font-size: clamp(3.25rem, 10vw, 8.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  font-weight: 700;
+}
+
+@utility display-lg {
+  font-size: clamp(2.75rem, 7.5vw, 6.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+@utility display-md {
+  font-size: clamp(2.125rem, 4.6vw, 3.75rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+}
+
+/* Mot ou phrase en Instrument Serif italique, au sein d'un titre en Inter */
+@utility serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+@utility eyebrow {
+  font-size: 0.875rem;
+  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--muted-foreground);
+}
+
+/* Paragraphe d'introduction : première phrase en encre, suite en gris */
+@utility lead {
+  font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  color: var(--muted-foreground);
+  & strong {
+    color: var(--foreground);
+    font-weight: 500;
+  }
+}
+
+/* Pastille de section centrée, façon Supaste */
+@utility section-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background: var(--surface);
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+/*
+  ImageAccordion : au repos, premier panneau ouvert, les autres repliés.
+  Hors couche (@layer) pour primer sur les utilitaires ; inactif si les
+  animations sont réduites (panneaux égaux, titres visibles).
+*/
+@media (width >= 48rem) and (prefers-reduced-motion: no-preference) {
+  .accordion:not(:hover):not(:focus-within) > article:not(:first-child) {
+    width: 20%;
+  }
+  .accordion:not(:hover):not(:focus-within) > article:not(:first-child)::after {
+    opacity: 1;
+  }
+  .accordion:not(:hover):not(:focus-within) > article:first-child::before {
+    opacity: 1;
+  }
+  .accordion:not(:hover):not(:focus-within) > article:first-child .accordion-reveal {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Entrées du hero : lettres floues → nettes, logo qui flotte.          */
+/* En pause pendant l'écran de chargement, lancées à sa sortie.         */
+/* ------------------------------------------------------------------ */
+
+@keyframes blur-in {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(0.25em);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes logo-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.94);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+.intro-enter {
+  animation: blur-in 0.9s var(--ease-apple) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+.hero-logo {
+  animation:
+    logo-in 1.2s var(--ease-apple) both,
+    float 7s ease-in-out 1.2s infinite;
+}
+
+html[data-intro="loading"] .intro-enter {
+  animation-play-state: paused;
+}
+
+/* Le logo du hero est remplacé par celui de l'écran de chargement, qui vient s'y poser. */
+html[data-intro] [data-hero-logo] {
+  visibility: hidden;
+  animation: none;
+}
+
+html[data-intro-played] .hero-logo {
+  animation: float 7s ease-in-out infinite;
+}
+
+.hero-bg {
+  transition: transform 1.8s var(--ease-apple);
+}
+
+html[data-intro="loading"] .hero-bg {
+  transform: scale(1.08) translateY(3%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo,
+  html[data-intro-played] .hero-logo {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Écran de chargement (une fois par session, piloté par un script en   */
+/* ligne : voir components/site/intro-loader.tsx).                      */
+/* ------------------------------------------------------------------ */
+
+.intro {
+  display: none;
+}
+
+html[data-intro] {
+  overflow: hidden;
+}
+
+html[data-intro] .intro {
+  --p: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: block;
+  overflow: hidden;
+  background: #040508;
+  color: #ffffff;
+  /* Filet de sécurité si le script ne termine pas : disparition à 6 s. */
+  animation: intro-failsafe 0.5s 6s forwards;
+}
+
+@keyframes intro-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Champ d'étoiles en CSS : deux couches qui scintillent en décalé. */
+.intro-stars,
+.intro-stars::after {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 27% 72%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 41% 33%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 58% 84%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 66% 12%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 79% 58%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 27%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 94% 91%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 6% 63%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 35% 95%, #fff 50%, transparent 51%);
+  background-size: 420px 420px;
+  opacity: 0.55;
+  animation: twinkle 3.2s ease-in-out infinite alternate;
+}
+
+.intro-stars::after {
+  content: "";
+  background-size: 290px 290px;
+  background-position: 120px 80px;
+  opacity: 0.35;
+  animation-delay: -1.6s;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 0.65;
+  }
+}
+
+/* Le logo s'écrit de gauche à droite, au rythme du pourcentage. */
+.intro-logo-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(36rem, 80vw);
+  translate: -50% -50%;
+}
+
+.intro-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-mask-image: linear-gradient(110deg, #000 44%, transparent 52%);
+  mask-image: linear-gradient(110deg, #000 44%, transparent 52%);
+  -webkit-mask-size: 240% 100%;
+  mask-size: 240% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: calc((100 - var(--p)) * 1%) 0;
+  mask-position: calc((100 - var(--p)) * 1%) 0;
+}
+
+/* Reflet qui balaie le chrome à 100 %, découpé à la forme du logo. */
+.intro-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.95) 50%, transparent 65%) no-repeat;
+  background-size: 250% 100%;
+  background-position: 130% 0;
+  -webkit-mask: var(--logo) center / contain no-repeat;
+  mask: var(--logo) center / contain no-repeat;
+  mix-blend-mode: overlay;
+  opacity: 0;
+}
+
+html[data-intro="exit"] .intro-shine {
+  animation: shine 0.9s var(--ease-apple) forwards;
+}
+
+@keyframes shine {
+  0% {
+    opacity: 1;
+    background-position: 130% 0;
+  }
+  100% {
+    opacity: 1;
+    background-position: -30% 0;
+  }
+}
+
+.intro-meta {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 1.25rem 1.5rem;
+  @media (width >= 48rem) {
+    padding: 0 2.5rem 2.25rem;
+  }
+}
+
+.intro-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.01em;
+}
+
+/* Compteur mécanique : chaque chiffre est une colonne 0-9 qui défile. */
+.intro-count {
+  display: flex;
+  align-items: flex-start;
+  font-size: clamp(3.5rem, 11vw, 8rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+
+.intro-digit {
+  --d: 0;
+  display: block;
+  height: 1em;
+  overflow: hidden;
+}
+
+.intro-digit > span {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(calc(var(--d) * -1em));
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.intro-digit[data-units] > span {
+  transition: none;
+}
+
+.intro-digit > span > span {
+  display: block;
+  height: 1em;
+}
+
+.intro-percent {
+  margin-top: 0.12em;
+  margin-left: 0.08em;
+  font-size: 0.32em;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.intro-bar {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.intro-bar > span {
+  display: block;
+  height: 100%;
+  width: calc(var(--p) * 1%);
+  background: #ffffff;
+}
