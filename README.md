@@ -31,7 +31,7 @@ npm run preview
 
 Les visuels optimisés (WebP, plusieurs largeurs) sont déjà dans `public/images` et le manifeste dans `src/data/images.generated.json`. Pas besoin de les régénérer pour construire le site.
 
-Pour les régénérer après un changement dans les dossiers sources (OneDrive : `Images Portfolio` dont `Hero Times Square.jpg`, `Logo Nathan nacré.png`, `Hero espace.png` et `Logo Nathan chrome.png`, `Logos CV`, favicon de `Webdesign comp_`, CV) :
+Pour les régénérer après un changement dans les dossiers sources (OneDrive : `Images Portfolio` dont `Hero Times Square.jpg`, `Logo Nathan nacré.png` et `Logo Nathan chrome.png`, `Logos CV`, favicon de `Webdesign comp_`, CV) :
 
 ```bash
 npm run images

@@ -84,12 +84,11 @@ async function logos() {
   }
 }
 
-// Photo de Times Square (verticale) : hero de l'accueil en entier, et bande de
-// fin de page recadrée des écrans publicitaires jusqu'à la rue (bus, taxi jaune,
-// passage piéton).
+// Photo de Times Square (verticale) : hero de l'accueil et de Contact en entier,
+// et bande de fin de l'accueil recadrée des écrans publicitaires jusqu'à la rue
+// (bus, taxi jaune, passage piéton). L'ancienne image spatiale (« Hero espace.png »)
+// n'est plus utilisée.
 const TIMES = () => path.join(SOURCES, "Images Portfolio", "Hero Times Square.jpg");
-// Image spatiale : ne sert plus qu'à la page Contact (recadrage Voie lactée).
-const SPACE = () => path.join(SOURCES, "Images Portfolio", "Hero espace.png");
 // Logo « Nathan. » : nacré (hero, écran de chargement, aperçu de partage),
 // chromé (favicon).
 const NACRE = () => path.join(SOURCES, "Images Portfolio", "Logo Nathan nacré.png");
@@ -99,8 +98,6 @@ async function heroImages() {
   await variants(TIMES(), "brand/hero-times", [640, 960, 1280, 1920, 2560], 68);
   const street = await sharp(TIMES()).extract({ left: 0, top: 1500, width: 3331, height: 3496 }).toBuffer();
   await variants(street, "brand/times-street", [640, 960, 1440, 1920, 2560], 70);
-  const milkyWay = await sharp(SPACE()).extract({ left: 0, top: 300, width: 2565, height: 1900 }).toBuffer();
-  await variants(milkyWay, "brand/space-milkyway", [960, 1440, 1920], 70);
   // Logo nacré : marges retirées, transparence conservée.
   const logo = await sharp(NACRE()).trim().toBuffer();
   await variants(logo, "brand/logo-nacre", [480, 800, 1200], 82);

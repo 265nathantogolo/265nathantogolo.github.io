@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { m, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 
+import { smoothFade } from "@/lib/gradients";
 import { imageMeta, imageSrc, imageSrcSet } from "@/lib/images";
 
 type ScrollRiseProps = {
@@ -96,20 +97,6 @@ export function EndBand() {
       <span className="absolute inset-x-0 bottom-0 h-[36%]" style={{ background: smoothFade("11 11 13", "to top") }} />
     </div>
   );
-}
-
-/**
- * Fondu opaque → transparent en courbe en S (smootherstep) : pente nulle aux deux
- * bouts, donc aucune ligne de démarcation avec l'aplat ni avec la photo.
- */
-function smoothFade(rgb: string, direction: "to top" | "to bottom") {
-  const steps = 16;
-  const stops = Array.from({ length: steps + 1 }, (_, i) => {
-    const t = i / steps;
-    const eased = t * t * t * (t * (t * 6 - 15) + 10);
-    return `rgb(${rgb} / ${(1 - eased).toFixed(3)}) ${+(t * 100).toFixed(1)}%`;
-  });
-  return `linear-gradient(${direction}, ${stops.join(", ")})`;
 }
 
 /** Texte qui s'éclaire mot à mot au fil du scroll (citation de l'accueil). */

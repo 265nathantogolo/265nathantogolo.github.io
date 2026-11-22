@@ -48,7 +48,7 @@ Inspirée de Supaste, plus « agence » que « vitrine d'étudiant » :
   - **Galerie** : tuile vitrine de la couleur du projet où jusqu'à trois visuels posés de biais débordent du bord (clic = visionneuse), puis les autres en rangée justifiée ou en mosaïque à leur format réel.
   - Chiffres clés de The Watchers en tuiles bento.
 - **À propos de moi** (ex « Profil », URL `/profil/` conservée) : page éditoriale façon brand book, missions dépliables, frise « Mon histoire » sur fond sombre, pastilles de soft skills et langues conservées.
-- **Contact** : recadrage Voie lactée de l'ancienne image spatiale (inchangé), adresse e-mail en très grand, boutons Téléphone, LinkedIn, CV (taille du PDF lue au build).
+- **Contact** : photo de Times Square cadrée plus bas que sur l'accueil (écrans, bus, taxi), voile bleu nuit plus dense côté texte, bas de la photo fondu dans le footer noir avec la même courbe douce que la fin de l'accueil, adresse e-mail en très grand, boutons Téléphone, LinkedIn, CV (taille du PDF lue au build).
 - **Alternance** : mentionnée une seule fois, discrètement, dans la nav (« Disponible · Alternance 2026 »), puis sur Contact. Ton neutre ou vouvoiement.
 - **Écran de chargement** : une fois par session, non passable, compteur 000 → 100 % qui suit le vrai chargement (2,4 s minimum, 4 s maximum), le logo nacré s'écrit puis vient se poser dans le hero de l'accueil. Version courte si les animations sont réduites.
 
@@ -90,7 +90,7 @@ Limite technique : le filtre SVG en `backdrop-filter` n'est rendu que par les na
 - Rayons : 30 px (cartes, panneaux), 18 px (vignettes), pilule (boutons).
 - Grille : 12 colonnes, 1280 px max, gouttières 16 / 24 / 40 px ; sections centrées.
 - Typographie : Inter (axe de taille optique : coupe Display sur les grands titres) + Instrument Serif italique pour les mots mis en valeur. Plus de dégradés sur les titres.
-- Sources ajoutées dans `Images Portfolio` : `Hero Times Square.jpg`, `Logo Nathan nacré.png` (ton logo détouré, `m2.png`), `Logo Nathan nacré (fond blanc).png` (version d'origine), `Hero espace.png` (page Contact), `Logo Nathan chrome.png` (favicon) et `06-15 Les Watchers - Hero Cartier Santos.png` (convertis en WebP par `npm run images`). Documents dans `Documents Portfolio` (copiés dans `public/docs` par le même script). Image Open Graph : Times Square sous un voile bleu nuit + logo nacré.
+- Sources ajoutées dans `Images Portfolio` : `Hero Times Square.jpg`, `Logo Nathan nacré.png` (ton logo détouré, `m2.png`), `Logo Nathan nacré (fond blanc).png` (version d'origine), `Hero espace.png` (plus utilisé), `Logo Nathan chrome.png` (favicon) et `06-15 Les Watchers - Hero Cartier Santos.png` (convertis en WebP par `npm run images`). Documents dans `Documents Portfolio` (copiés dans `public/docs` par le même script). Image Open Graph : Times Square sous un voile bleu nuit + logo nacré.
 
 ## 7. Tests réalisés
 
