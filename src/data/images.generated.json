@@ -1,26 +1,18 @@
 {
-  "brand/hero-space": {
-    "w": 2565,
-    "h": 1800,
+  "brand/hero-times": {
+    "w": 3331,
+    "h": 4996,
     "widths": [
+      640,
       960,
-      1440,
+      1280,
       1920,
       2560
     ]
   },
-  "brand/hero-space-portrait": {
-    "w": 2565,
-    "h": 3206,
-    "widths": [
-      640,
-      960,
-      1280
-    ]
-  },
-  "brand/logo-chrome": {
-    "w": 1742,
-    "h": 1459,
+  "brand/logo-nacre": {
+    "w": 2490,
+    "h": 2046,
     "widths": [
       480,
       800,
@@ -41,6 +33,17 @@
       960,
       1440,
       1920
+    ]
+  },
+  "brand/times-street": {
+    "w": 3331,
+    "h": 2496,
+    "widths": [
+      640,
+      960,
+      1440,
+      1920,
+      2560
     ]
   },
   "logos/forum-commerce-durable": {

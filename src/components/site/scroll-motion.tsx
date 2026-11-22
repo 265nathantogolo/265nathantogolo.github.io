@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import { m, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 
+import { imageMeta, imageSrc, imageSrcSet } from "@/lib/images";
+
 type ScrollRiseProps = {
   children: React.ReactNode;
   className?: string;
@@ -53,6 +55,43 @@ function Word({ children, progress, range }: { children: string; progress: Motio
     <>
       <m.span style={{ opacity }}>{children}</m.span>{" "}
     </>
+  );
+}
+
+/**
+ * Fin de l'accueil, comme sur Supaste : la photo du hero revient juste avant le
+ * footer, cadrée sur la rue (taxi jaune, passage piéton). Elle sort du blanc en
+ * fondu, glisse doucement au fil du scroll et s'assombrit vers le footer noir.
+ */
+export function EndBand() {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["-7%", "7%"]);
+  const photo = imageMeta("brand/times-street");
+
+  return (
+    <div
+      ref={ref}
+      data-end-band=""
+      aria-hidden
+      className="relative mt-32 h-[clamp(24rem,74svh,50rem)] overflow-hidden md:mt-48"
+    >
+      <m.img
+        src={imageSrc("brand/times-street", 1920)}
+        srcSet={imageSrcSet("brand/times-street")}
+        sizes="100vw"
+        width={photo.w}
+        height={photo.h}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        style={reduce ? undefined : { y }}
+        className="absolute inset-x-0 -top-[8%] h-[116%] w-full object-cover object-[50%_45%] max-md:object-[46%_45%]"
+      />
+      <span className="absolute inset-x-0 top-0 h-[42%] bg-linear-to-b from-white via-white/55 to-transparent" />
+      <span className="absolute inset-x-0 bottom-0 h-[45%] bg-linear-to-t from-night via-night/45 to-transparent" />
+    </div>
   );
 }
 

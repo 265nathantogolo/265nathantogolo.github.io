@@ -84,20 +84,25 @@ async function logos() {
   }
 }
 
-// Image spatiale : recadrage paysage (horizon de la Terre en bas, Voie lactée
-// au-dessus du titre), version portrait pour mobile, et recadrage Voie lactée.
+// Photo de Times Square (verticale) : hero de l'accueil en entier, et bande de
+// fin de page recadrée sur la rue (bus, taxi jaune, passage piéton).
+const TIMES = () => path.join(SOURCES, "Images Portfolio", "Hero Times Square.jpg");
+// Image spatiale : ne sert plus qu'à la page Contact (recadrage Voie lactée).
 const SPACE = () => path.join(SOURCES, "Images Portfolio", "Hero espace.png");
+// Logo « Nathan. » : nacré (hero, écran de chargement, aperçu de partage),
+// chromé (favicon).
+const NACRE = () => path.join(SOURCES, "Images Portfolio", "Logo Nathan nacré.png");
 const LOGO = () => path.join(SOURCES, "Images Portfolio", "Logo Nathan chrome.png");
 
-async function space() {
-  const landscape = await sharp(SPACE()).extract({ left: 0, top: 900, width: 2565, height: 1800 }).toBuffer();
-  await variants(landscape, "brand/hero-space", [960, 1440, 1920, 2560], 70);
-  await variants(SPACE(), "brand/hero-space-portrait", [640, 960, 1280], 70);
+async function heroImages() {
+  await variants(TIMES(), "brand/hero-times", [640, 960, 1280, 1920, 2560], 68);
+  const street = await sharp(TIMES()).extract({ left: 0, top: 2500, width: 3331, height: 2496 }).toBuffer();
+  await variants(street, "brand/times-street", [640, 960, 1440, 1920, 2560], 70);
   const milkyWay = await sharp(SPACE()).extract({ left: 0, top: 300, width: 2565, height: 1900 }).toBuffer();
   await variants(milkyWay, "brand/space-milkyway", [960, 1440, 1920], 70);
-  // Logo « Nathan. » chromé : marges retirées, transparence conservée.
-  const logo = await sharp(LOGO()).trim().toBuffer();
-  await variants(logo, "brand/logo-chrome", [480, 800, 1200], 82);
+  // Logo nacré : marges retirées, transparence conservée.
+  const logo = await sharp(NACRE()).trim().toBuffer();
+  await variants(logo, "brand/logo-nacre", [480, 800, 1200], 82);
 }
 
 async function brand() {
@@ -124,17 +129,36 @@ async function brand() {
   // iOS arrondit lui-même les coins : carré plein, sans transparence.
   await (await tile(180, 0, 0.12)).toFile(path.join(app, "apple-icon.png"));
 
-  // Image Open Graph : image spatiale (horizon en bas) + logo chromé au centre.
-  const background = await sharp(SPACE())
-    .extract({ left: 0, top: 1250, width: 2565, height: 1347 })
+  // Image Open Graph : Times Square (écrans et ciel) sous un voile bleu nuit,
+  // logo nacré au centre avec une ombre douce.
+  const background = await sharp(TIMES())
+    .extract({ left: 0, top: 700, width: 3331, height: 1749 })
     .resize(1200, 630)
-    .modulate({ brightness: 0.9 })
+    .modulate({ brightness: 0.8 })
     .toBuffer();
-  const logo = await sharp(LOGO()).trim().resize({ height: 380 }).png().toBuffer();
-  const { width: logoW } = await sharp(logo).metadata();
+  const veil = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><defs><radialGradient id="v" cx="50%" cy="50%" r="62%"><stop offset="0" stop-color="#040816" stop-opacity="0.62"/><stop offset="1" stop-color="#040816" stop-opacity="0.22"/></radialGradient></defs><rect width="1200" height="630" fill="url(#v)"/></svg>`,
+  );
+  const logo = await sharp(NACRE()).trim().resize({ height: 400 }).png().toBuffer();
+  const { width: logoW, height: logoH } = await sharp(logo).metadata();
+  // Ombre : silhouette noire du logo à 55 %, floutée.
+  const alpha = await sharp(logo).extractChannel(3).linear(0.55, 0).png().toBuffer();
+  const silhouette = await sharp({ create: { width: logoW, height: logoH, channels: 3, background: "#000000" } })
+    .joinChannel(alpha)
+    .png()
+    .toBuffer();
+  const shadow = await sharp(silhouette)
+    .extend({ top: 40, bottom: 40, left: 40, right: 40, background: "#00000000" })
+    .blur(18)
+    .png()
+    .toBuffer();
+  const left = Math.round((1200 - logoW) / 2);
+  const top = Math.round((630 - logoH) / 2);
   await sharp(background)
     .composite([
-      { input: logo, left: Math.round((1200 - logoW) / 2), top: 70 },
+      { input: veil },
+      { input: shadow, left: left - 40, top: top - 40 + 18 },
+      { input: logo, left, top },
     ])
     .jpeg({ quality: 86, mozjpeg: true })
     .toFile(path.join(app, "opengraph-image.jpg"));
@@ -164,7 +188,7 @@ if (!existsSync(SOURCES)) {
 }
 
 await rm(OUT, { recursive: true, force: true });
-await Promise.all([projects(), logos(), space()]);
+await Promise.all([projects(), logos(), heroImages()]);
 await brand();
 await cv();
 await docs();

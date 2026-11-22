@@ -261,7 +261,9 @@ export const projects: Project[] = [
     ],
     theme: theme("crimson-ale", { accent: "#b61c23", onAccent: "#ffffff", ink: "#b61c23" }),
     hero: { mode: "cover", image: p("crimson-ale", "03", "16"), position: "50% 45%" },
-    cover: p("crimson-ale", "03", "04"),
+    // Gros plan sur l'étiquette Red version, cadré sur « CRIMSON » et l'hibiscus.
+    cover: p("crimson-ale", "03", "05"),
+    coverPosition: "50% 42%",
     images: [
       { id: p("crimson-ale", "03", "04"), alt: "Bouteilles Crimson Ale Red et White devant le nom de la bière en grandes lettres" },
       { id: p("crimson-ale", "03", "05"), alt: "Gros plan sur l'étiquette Red version : typographie crème et fleur d'hibiscus rouge" },
@@ -650,7 +652,7 @@ export const projects: Project[] = [
 /** Projets phares de l'accueil (validés) : image choisie pour le format paysage. */
 export const featured: { slug: string; image: string }[] = [
   { slug: "europcar", image: p("europcar", "04", "14") },
-  { slug: "crimson-ale", image: p("crimson-ale", "03", "16") },
+  { slug: "crimson-ale", image: p("crimson-ale", "03", "05") },
   { slug: "joon", image: p("joon", "01", "15") },
   { slug: "les-watchers", image: p("les-watchers", "06", "15") },
   { slug: "affiche-bleach", image: p("affiche-bleach", "10", "05") },

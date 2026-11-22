@@ -11,7 +11,7 @@ import { imageMeta, imageSrc, imageSrcSet } from "@/lib/images";
      minimale pour que l'animation se voie et un plafond de 4 s.
   Le logo s'écrit au rythme du compteur, un reflet le balaie à 100 %, puis :
   - sur l'accueil, il vient se poser à sa place dans le hero pendant que
-    le noir s'efface sur l'image spatiale ;
+    le noir s'efface sur la photo de Times Square ;
   - ailleurs, le rideau remonte avec un bord arrondi.
   Non passable. Sans JavaScript : rien ne s'affiche. Filet CSS à 6 s.
 */
@@ -87,7 +87,7 @@ function Digit({ units = false }: { units?: boolean }) {
 }
 
 export function IntroLoader() {
-  const { w, h } = imageMeta("brand/logo-chrome");
+  const { w, h } = imageMeta("brand/logo-nacre");
   return (
     <>
       <div
@@ -95,7 +95,7 @@ export function IntroLoader() {
         className="intro"
         aria-hidden
         suppressHydrationWarning
-        style={{ "--logo": `url("${imageSrc("brand/logo-chrome", 800)}")` } as React.CSSProperties}
+        style={{ "--logo": `url("${imageSrc("brand/logo-nacre", 800)}")` } as React.CSSProperties}
       >
         <div className="intro-stars" />
         <div className="intro-logo-wrap">
@@ -103,8 +103,8 @@ export function IntroLoader() {
           <img
             id="intro-logo"
             className="intro-logo"
-            src={imageSrc("brand/logo-chrome", 800)}
-            srcSet={imageSrcSet("brand/logo-chrome")}
+            src={imageSrc("brand/logo-nacre", 800)}
+            srcSet={imageSrcSet("brand/logo-nacre")}
             sizes="(min-width: 48rem) 36rem, 80vw"
             width={w}
             height={h}

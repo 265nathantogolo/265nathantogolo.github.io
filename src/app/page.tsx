@@ -13,7 +13,7 @@ import TailwindImageAccordion, { type AccordionItem } from "@/components/ui/imag
 import { LogoMarquee } from "@/components/ui/logo-marquee";
 import { BlurIn, BlurText } from "@/components/site/blur-text";
 import { ResponsiveImage } from "@/components/site/responsive-image";
-import { ScrollRise, ScrollWords } from "@/components/site/scroll-motion";
+import { EndBand, ScrollRise, ScrollWords } from "@/components/site/scroll-motion";
 
 const accordionItems: AccordionItem[] = featured.map(({ slug, image }) => {
   const project = getProject(slug)!;
@@ -96,33 +96,39 @@ const sdp = education.find((item) => item.id === "sup-de-pub")!;
 const heroInfos = [site.school, `${experiences.length} expériences en agence`, "Alternance 2026"];
 
 export default function HomePage() {
-  const logo = imageMeta("brand/logo-chrome");
+  const logo = imageMeta("brand/logo-nacre");
+  const photo = imageMeta("brand/hero-times");
 
   return (
     <>
       {/*
-        Hero plein écran sur l'image spatiale : la Voie lactée derrière le titre,
-        l'horizon de la Terre sous le panneau des projets, fondu vers le blanc.
+        Hero plein écran sur la photo de Times Square : ciel et écrans derrière
+        le logo, voile bleu nuit pour la lisibilité, fondu vers le blanc sous le
+        panneau des projets. La rue (taxi, passage piéton) revient en fin de page.
       */}
       <section data-hero="dark" aria-labelledby="hero-title" className="relative isolate overflow-hidden text-white">
-        <picture>
-          <source
-            media="(max-aspect-ratio: 4/5)"
-            type="image/webp"
-            srcSet={imageSrcSet("brand/hero-space-portrait")}
-            sizes="100vw"
-          />
-          <img
-            src={imageSrc("brand/hero-space", 1920)}
-            srcSet={imageSrcSet("brand/hero-space")}
-            sizes="100vw"
-            width={imageMeta("brand/hero-space").w}
-            height={imageMeta("brand/hero-space").h}
-            alt=""
-            fetchPriority="high"
-            className="hero-bg absolute inset-0 -z-20 size-full object-cover object-[50%_78%]"
-          />
-        </picture>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={imageSrc("brand/hero-times", 1920)}
+          srcSet={imageSrcSet("brand/hero-times")}
+          sizes="100vw"
+          width={photo.w}
+          height={photo.h}
+          alt=""
+          fetchPriority="high"
+          className="hero-bg absolute inset-0 -z-20 size-full object-cover object-[46%_0%] md:object-[50%_6%]"
+        />
+        <span
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{
+            background: [
+              "radial-gradient(75% 48% at 50% 30%, rgba(4,8,22,0.62) 0%, rgba(4,8,22,0.38) 55%, rgba(4,8,22,0) 100%)",
+              // plus dense entre 40 et 70 % : ligne d'infos et titre « Projets phares » sur les écrans vifs
+              "linear-gradient(to bottom, rgba(4,8,22,0.5) 0%, rgba(4,8,22,0.22) 20%, rgba(4,8,22,0.32) 40%, rgba(4,8,22,0.5) 56%, rgba(4,8,22,0.46) 68%, rgba(4,8,22,0.16) 80%, rgba(4,8,22,0) 90%)",
+            ].join(", "),
+          }}
+        />
         <span aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-[38%] bg-linear-to-b from-transparent via-white/70 to-white" />
 
         <div className="container-page flex min-h-svh flex-col items-center justify-center pt-28 pb-16 text-center">
@@ -130,8 +136,8 @@ export default function HomePage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               data-hero-logo=""
-              src={imageSrc("brand/logo-chrome", 800)}
-              srcSet={imageSrcSet("brand/logo-chrome")}
+              src={imageSrc("brand/logo-nacre", 800)}
+              srcSet={imageSrcSet("brand/logo-nacre")}
               sizes="(min-width: 48rem) 30rem, 76vw"
               width={logo.w}
               height={logo.h}
@@ -160,7 +166,7 @@ export default function HomePage() {
             </LiquidButton>
           </BlurIn>
           <BlurIn delay={1000} className="mt-10">
-            <ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-white/65">
+            <ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-white/80 [text-shadow:0_1px_10px_rgba(4,8,22,0.7)]">
               {heroInfos.map((info, i) => (
                 <li key={info} className="flex items-center gap-3">
                   {i > 0 && <span aria-hidden className="size-1 rounded-full bg-white/40" />}
@@ -174,8 +180,8 @@ export default function HomePage() {
         {/* Panneau des projets phares, en verre liquide, posé sur l'horizon. */}
         <ScrollRise className="container-page pb-20 md:pb-28" distance={140} from={0.9}>
           <div className="mb-4 flex items-end justify-between gap-4 px-1">
-            <h2 className="text-sm font-medium text-white/80">Projets phares</h2>
-            <Link href="/projets/" className="group inline-flex items-center gap-1.5 text-sm font-medium text-white/80 transition-colors hover:text-white">
+            <h2 className="text-sm font-semibold text-white [text-shadow:0_1px_12px_rgba(4,8,22,0.85)]">Projets phares</h2>
+            <Link href="/projets/" className="group inline-flex items-center gap-1.5 text-sm font-semibold text-white/90 [text-shadow:0_1px_12px_rgba(4,8,22,0.85)] transition-colors hover:text-white">
               Les {projects.length} projets
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
             </Link>
@@ -292,6 +298,8 @@ export default function HomePage() {
           </Link>
         </ScrollRise>
       </section>
+
+      <EndBand />
     </>
   );
 }

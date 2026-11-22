@@ -28,9 +28,11 @@ const linkClass = "text-[0.9375rem] text-white/60 transition-colors hover:text-w
 export function SiteFooter({ projectLinks }: { projectLinks: { slug: string; title: string }[] }) {
   const pathname = usePathname();
   const onContact = isActive(pathname, "/contact/");
+  // Sur l'accueil, le footer s'accroche directement à la bande photo de fin de page.
+  const onHome = pathname === "/";
 
   return (
-    <footer className={`relative bg-night text-white ${onContact ? "" : "mt-36 md:mt-48"}`}>
+    <footer className={`relative bg-night text-white ${onContact || onHome ? "" : "mt-36 md:mt-48"}`}>
       {/* Encoche inversée : l'onglet remonte dans la page. */}
       <div className="absolute bottom-full left-1/2 flex h-12 -translate-x-1/2 items-center rounded-t-[1.5rem] bg-night px-6">
         <Ear side="left" />
