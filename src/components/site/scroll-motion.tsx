@@ -60,8 +60,10 @@ function Word({ children, progress, range }: { children: string; progress: Motio
 
 /**
  * Fin de l'accueil, comme sur Supaste : la photo du hero revient juste avant le
- * footer, cadrée sur la rue (taxi jaune, passage piéton). Elle sort du blanc en
- * fondu, glisse doucement au fil du scroll et s'assombrit vers le footer noir.
+ * footer, des écrans publicitaires jusqu'à la rue (taxi jaune, passage piéton).
+ * Elle sort du blanc en fondu, glisse doucement au fil du scroll et s'assombrit
+ * vers le footer noir. Les fondus n'occupent qu'un tiers chacun : la photo reste
+ * bien visible au milieu.
  */
 export function EndBand() {
   const reduce = useReducedMotion();
@@ -75,7 +77,7 @@ export function EndBand() {
       ref={ref}
       data-end-band=""
       aria-hidden
-      className="relative mt-32 h-[clamp(24rem,74svh,50rem)] overflow-hidden md:mt-48"
+      className="relative mt-32 h-[clamp(28rem,92svh,60rem)] overflow-hidden md:mt-48"
     >
       <m.img
         src={imageSrc("brand/times-street", 1920)}
@@ -87,22 +89,27 @@ export function EndBand() {
         loading="lazy"
         decoding="async"
         style={reduce ? undefined : { y }}
-        className="absolute inset-x-0 -top-[8%] h-[116%] w-full object-cover object-[50%_45%] max-md:object-[46%_45%]"
+        className="absolute inset-x-0 -top-[8%] h-[116%] w-full object-cover object-[50%_58%] max-md:object-[38%_50%]"
       />
-      {/*
-        Entrée depuis le blanc de la page et sortie vers le footer noir : courbe en S
-        (smootherstep), sans cassure aux extrémités, donc sans ligne de démarcation.
-      */}
-      <span
-        className="absolute inset-x-0 top-0 h-[66%]"
-        style={{ background: "linear-gradient(to bottom, rgb(255 255 255 / 1.000) 0%, rgb(255 255 255 / 0.998) 6.3%, rgb(255 255 255 / 0.984) 12.5%, rgb(255 255 255 / 0.951) 18.8%, rgb(255 255 255 / 0.896) 25%, rgb(255 255 255 / 0.820) 31.3%, rgb(255 255 255 / 0.725) 37.5%, rgb(255 255 255 / 0.616) 43.8%, rgb(255 255 255 / 0.500) 50%, rgb(255 255 255 / 0.384) 56.3%, rgb(255 255 255 / 0.275) 62.5%, rgb(255 255 255 / 0.180) 68.8%, rgb(255 255 255 / 0.104) 75%, rgb(255 255 255 / 0.049) 81.3%, rgb(255 255 255 / 0.016) 87.5%, rgb(255 255 255 / 0.002) 93.8%, rgb(255 255 255 / 0.000) 100%)" }}
-      />
-      <span
-        className="absolute inset-x-0 bottom-0 h-[80%]"
-        style={{ background: "linear-gradient(to top, rgb(11 11 13 / 1.000) 0%, rgb(11 11 13 / 0.998) 6.3%, rgb(11 11 13 / 0.984) 12.5%, rgb(11 11 13 / 0.951) 18.8%, rgb(11 11 13 / 0.896) 25%, rgb(11 11 13 / 0.820) 31.3%, rgb(11 11 13 / 0.725) 37.5%, rgb(11 11 13 / 0.616) 43.8%, rgb(11 11 13 / 0.500) 50%, rgb(11 11 13 / 0.384) 56.3%, rgb(11 11 13 / 0.275) 62.5%, rgb(11 11 13 / 0.180) 68.8%, rgb(11 11 13 / 0.104) 75%, rgb(11 11 13 / 0.049) 81.3%, rgb(11 11 13 / 0.016) 87.5%, rgb(11 11 13 / 0.002) 93.8%, rgb(11 11 13 / 0.000) 100%)" }}
-      />
+      {/* Entrée depuis le blanc de la page, puis sortie vers le footer noir : un tiers chacun. */}
+      <span className="absolute inset-x-0 top-0 h-[34%]" style={{ background: smoothFade("255 255 255", "to bottom") }} />
+      <span className="absolute inset-x-0 bottom-0 h-[36%]" style={{ background: smoothFade("11 11 13", "to top") }} />
     </div>
   );
+}
+
+/**
+ * Fondu opaque → transparent en courbe en S (smootherstep) : pente nulle aux deux
+ * bouts, donc aucune ligne de démarcation avec l'aplat ni avec la photo.
+ */
+function smoothFade(rgb: string, direction: "to top" | "to bottom") {
+  const steps = 16;
+  const stops = Array.from({ length: steps + 1 }, (_, i) => {
+    const t = i / steps;
+    const eased = t * t * t * (t * (t * 6 - 15) + 10);
+    return `rgb(${rgb} / ${(1 - eased).toFixed(3)}) ${+(t * 100).toFixed(1)}%`;
+  });
+  return `linear-gradient(${direction}, ${stops.join(", ")})`;
 }
 
 /** Texte qui s'éclaire mot à mot au fil du scroll (citation de l'accueil). */

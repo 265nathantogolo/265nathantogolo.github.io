@@ -43,8 +43,8 @@ export function SiteFooter({ projectLinks }: { projectLinks: { slug: string; tit
         </a>
       </div>
 
-      <div className="container-page pt-16 pb-10 md:pt-24">
-        <div className="grid gap-14 lg:grid-cols-12">
+      <div className="container-page pt-11 pb-7 md:pt-16">
+        <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
             {onContact ? (
               <p className="max-w-sm text-2xl leading-snug font-semibold tracking-[-0.03em]">
@@ -56,7 +56,7 @@ export function SiteFooter({ projectLinks }: { projectLinks: { slug: string; tit
                 <h2 className="max-w-md text-[clamp(2.125rem,3.6vw,3.25rem)] leading-[1.02] font-bold tracking-[-0.035em]">
                   Un poste, un projet, une question&nbsp;? <span className="serif">Parlons-en.</span>
                 </h2>
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className="mt-6 flex flex-wrap gap-3">
                   <LiquidButton asChild variant="tinted" surface="dark" size="lg">
                     <a href={`mailto:${site.email}`}>
                       <Mail />
@@ -75,10 +75,10 @@ export function SiteFooter({ projectLinks }: { projectLinks: { slug: string; tit
             )}
           </div>
 
-          <nav aria-label="Pied de page" className="grid gap-10 sm:grid-cols-[1fr_1fr_1.45fr] lg:col-span-7">
+          <nav aria-label="Pied de page" className="grid gap-8 sm:grid-cols-[1fr_1fr_1.45fr] lg:col-span-7">
             <div>
               <h3 className="text-sm font-medium text-white">Navigation</h3>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3 space-y-2">
                 {nav.map((item) => (
                   <li key={item.href}>
                     <Link
@@ -94,7 +94,7 @@ export function SiteFooter({ projectLinks }: { projectLinks: { slug: string; tit
             </div>
             <div>
               <h3 className="text-sm font-medium text-white">Projets</h3>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3 space-y-2">
                 {projectLinks.map((project) => (
                   <li key={project.slug}>
                     <Link href={`/projets/${project.slug}/`} className={linkClass}>
@@ -111,7 +111,7 @@ export function SiteFooter({ projectLinks }: { projectLinks: { slug: string; tit
             </div>
             <div>
               <h3 className="text-sm font-medium text-white">Contact</h3>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3 space-y-2">
                 <li>
                   <a href={`mailto:${site.email}`} className={linkClass}>
                     {site.email}
@@ -146,7 +146,7 @@ export function SiteFooter({ projectLinks }: { projectLinks: { slug: string; tit
       </div>
 
       <div className="border-t border-white/10">
-        <p className="container-page py-5 text-xs text-white/50">
+        <p className="container-page py-4 text-xs text-white/50">
           © {new Date().getFullYear()} {site.name} · {site.school} {site.schoolYears}
         </p>
       </div>
