@@ -90,7 +90,17 @@ export function EndBand() {
         className="absolute inset-x-0 -top-[8%] h-[116%] w-full object-cover object-[50%_45%] max-md:object-[46%_45%]"
       />
       <span className="absolute inset-x-0 top-0 h-[42%] bg-linear-to-b from-white via-white/55 to-transparent" />
-      <span className="absolute inset-x-0 bottom-0 h-[45%] bg-linear-to-t from-night via-night/45 to-transparent" />
+      {/*
+        Fondu vers le footer : long (les trois quarts de la bande) et en courbe
+        douce, pour qu'aucune ligne de démarcation n'apparaisse avec le noir.
+      */}
+      <span
+        className="absolute inset-x-0 bottom-0 h-[80%]"
+        style={{
+          background:
+            "linear-gradient(to top, rgb(11 11 13) 0%, rgb(11 11 13) 10%, rgb(11 11 13 / 0.95) 18%, rgb(11 11 13 / 0.86) 27%, rgb(11 11 13 / 0.74) 36%, rgb(11 11 13 / 0.6) 45%, rgb(11 11 13 / 0.45) 54%, rgb(11 11 13 / 0.31) 63%, rgb(11 11 13 / 0.19) 72%, rgb(11 11 13 / 0.09) 81%, rgb(11 11 13 / 0.03) 90%, rgb(11 11 13 / 0) 100%)",
+        }}
+      />
     </div>
   );
 }
